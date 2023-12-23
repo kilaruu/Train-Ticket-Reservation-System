@@ -11,6 +11,12 @@ pipeline{
             sh ' mvn clean install '
                          }
             }
+ stage('test'){
+       steps{
+withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
+                    -Dsonar.java.binaries=. \
+                    -Dsonar.projectKey=Petclinic '''
 }
 }
 
