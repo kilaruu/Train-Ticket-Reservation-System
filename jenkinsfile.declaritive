@@ -6,7 +6,7 @@ pipeline{
            git 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
            }
           }
-     stage("Maven Build"){
+     stage('maven Build'){
        steps{
             sh 'mvn clean install'
                          }
