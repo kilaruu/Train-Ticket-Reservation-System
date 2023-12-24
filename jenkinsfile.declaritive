@@ -1,19 +1,1 @@
-pipeline{
-  agent any
-  stages{
-    stage("Git Checkout"){
-      steps{
-           git 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
-           }
-          }
-     stage('maven Build'){
-       steps{
-            sh ' mvn clean install '
-                         }
-            }
 
-}
-}
-
-
- 
