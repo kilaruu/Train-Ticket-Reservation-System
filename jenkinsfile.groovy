@@ -1,6 +1,5 @@
 node {
- 
-    stage ('git clone'){
+     stage ('git clone'){
       git credentialsId: 'jenkins cred', url: 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
     }
     stage('maven build'){
