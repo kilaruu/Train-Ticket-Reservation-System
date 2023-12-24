@@ -11,12 +11,7 @@ pipeline{
             sh ' mvn clean install '
                          }
             }
- stage('test'){
-       steps{
-withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=project-demo \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectKey= sqa_7aa97bc9a6edd2daf637b9ca1f805bc48ed92b6a'''
+
 }
 }
 
