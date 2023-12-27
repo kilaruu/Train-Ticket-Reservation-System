@@ -1,1 +1,73 @@
+pipeline {
+    agent none
+    parameters {
+	string (defaultValue: 'dev',description:'Enter the ENV value', name:'env.BRANCH_NAME')
+	choice (name: 'BRANCH_NAME', choices: ['master','dev','build'], description:'')
+	  booleanParam defaultValue: true, name: 'my boolean'  
+}	  
+
+triggers {
+  cron '5 * * * *'
+  pollSCM '* * * * *'
+}
+    stages {
+        stage('checkout'){
+		agent {
+		label "sonar"
+		}
+            steps{
+              git 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
+             
+            }
+        }
+	         stage('stage-2 sonar') {
+	             	agent {
+		 label "sonar"
+		 }
+		  steps {
+            	withSonarQubeEnv(credentialsId: 'sonarqube-Token', installationName: 'sonar-server') {
+    // some block
+    sh 'mvn clean verify sonar:sonar'
+            	}         
+		 }
+	         }
+        stage('stage-3 maven build') {
+            agent {
+		 label "Tomcat"
+		 }
+		    when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }            
+        steps {
+                        sh 'mvn clean install'
+	               echo "executing ${branch} on checkout code"
+             }
+        }
+		
+                stage('stage-4 deploy') {
+	          	agent {
+		       label "Tomcat"
+		  }
+		  when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+		sshagent(['tomcatcred']) {
+    // some block
+            sh 'scp -o strictHostkeyChecking=no target/*.war ubuntu@13.232.233.228:/opt/tomcat/apache-tomcat-9.0.68/webapps/'
+			             
+            }
+        }
+    
+    }
+}    
+            post {
+        success {
+            mail to:"ashokchowdary9928@gmail.com", subject:"SUCCESS: [job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}]", body: "[job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}] Build Success."
+        }
+        failure {
+            mail to:"ashokchowdary9928@gmail.com", subject:"FAILURE: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${env.BUILD_URL}", body: "[job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}] Build failure."
+        }
+    }        
+}
 
