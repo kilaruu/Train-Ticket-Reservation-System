@@ -1,7 +1,7 @@
 pipeline {
     agent none
     parameters {
-	string (defaultValue: 'dev',description:'Enter the ENV value', name:'env.BRANCH_NAME')
+	string (defaultValue: 'build',description:'Enter the ENV value', name:'dev')
 	choice (name: 'BRANCH_NAME', choices: ['master','dev','build'], description:'')
 	  booleanParam defaultValue: true, name: 'my boolean'
   
@@ -10,6 +10,9 @@ pipeline {
 environment {
 GITHUB_KEY = credentials('my github token')
 JENKINS_USER = credentials('jenkins-username')
+ 
+  env.BRANCH_NAME = "master"
+  env.BRANCH_NAME = "dev"
 }
 
 
@@ -47,12 +50,11 @@ triggers {
             agent {
 		 label "Tomcat"
 		 }
-		     when {
+		   when {
                 expression {
                     currentBuild.resultIsBetterOrEqualTo('SUCCESS') &&
                     (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev')
                 }
-            
         steps {
             
             sh 'mvn clean install'
@@ -70,7 +72,7 @@ triggers {
             steps {
 		sshagent(['tomcatcred']) {
     // some block
-            sh 'scp -o strictHostkeyChecking=no target/*.war ubuntu@172.31.35.46:/opt/tomcat/apache-tomcat-9.0.68/webapps/'
+            sh 'scp -o strictHostkeyChecking=no target/*.war ubuntu@65.2.124.250:/opt/tomcat/apache-tomcat-9.0.68/webapps/'
 			             
             }
         }
@@ -87,4 +89,5 @@ triggers {
             mail to:"ashokchowdary9928@gmail.com", subject:"FAILURE: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${env.BUILD_URL}", body: "[job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}] Build failure."
         }
     }        
+}
 }
