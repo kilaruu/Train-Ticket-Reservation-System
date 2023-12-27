@@ -5,10 +5,11 @@ pipeline {
 	choice (name: 'branch', choices: ['master','dev','build'], description:'')
 	  booleanParam defaultValue: true, name: 'my boolean'  
 }	
-envirnoment {
-env.BRANCH_NAME == 'master'
-env.BRANCH_NAME == 'dev'
+environment
+env.BRANCH_NAME = 'master'
+env.BRANCH_NAME = 'dev'
 }
+
 triggers {
   cron '5 * * * *'
   pollSCM '* * * * *'
