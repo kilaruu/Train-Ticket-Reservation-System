@@ -8,6 +8,7 @@ pipeline {
 envirnoment {
 env.BRANCH_NAME == 'master'
 env.BRANCH_NAME == 'dev'
+}
 triggers {
   cron '5 * * * *'
   pollSCM '* * * * *'
