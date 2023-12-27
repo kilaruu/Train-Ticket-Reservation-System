@@ -76,5 +76,5 @@ triggers {
             mail to:"ashokchowdary9928@gmail.com", subject:"FAILURE: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${env.BUILD_URL}", body: "[job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}] Build failure."
         }
     }        
-}
+
 
