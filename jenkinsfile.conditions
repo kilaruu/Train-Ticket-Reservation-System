@@ -6,8 +6,8 @@ pipeline {
 	  booleanParam defaultValue: true, name: 'my boolean'  
 }	
 environment
-env.BRANCH_NAME = 'master'
-env.BRANCH_NAME = 'dev'
+env.BRANCH_NAME = "master"
+env.BRANCH_NAME = "dev"
 }
 
 triggers {
