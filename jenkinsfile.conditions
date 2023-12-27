@@ -5,10 +5,6 @@ pipeline {
 	choice (name: 'branch', choices: ['master','dev','build'], description:'')
 	  booleanParam defaultValue: true, name: 'my boolean'  
 }	
-environment
-env.BRANCH_NAME = "master"
-env.BRANCH_NAME = "dev"
-}
 
 triggers {
   cron '5 * * * *'
@@ -75,6 +71,7 @@ triggers {
         failure {
             mail to:"ashokchowdary9928@gmail.com", subject:"FAILURE: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${env.BUILD_URL}", body: "[job name=${env.JOB_NAME}] [Build no=${env.BUILD_NUMBER}][build url= ${env.BUILD_URL}] Build failure."
         }
-    }        
+    }    
+}
 
 
