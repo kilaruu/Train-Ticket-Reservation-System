@@ -2,7 +2,7 @@ pipeline {
     agent none
     parameters {
 	string (defaultValue: 'dev',description:'Enter the ENV value', name:'env.BRANCH_NAME')
-	choice (name: 'BRANCH_NAME', choices: ['master','dev','build'], description:'')
+	choice (name: 'branch', choices: ['master','dev','build'], description:'')
 	  booleanParam defaultValue: true, name: 'my boolean'  
 }	  
 
@@ -34,11 +34,8 @@ triggers {
         stage('stage-3 maven build') {
             agent {
 		 label "Tomcat"
-		 }
-		    when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }            
-        steps {
+		 }		           
+                       steps {
                         sh 'mvn clean install'
 	               echo "executing ${branch} on checkout code"
              }
