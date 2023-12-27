@@ -34,7 +34,13 @@ triggers {
         stage('stage-3 maven build') {
             agent {
 		 label "Tomcat"
-		 }		           
+		 }	
+                   when {
+                expression {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS') &&
+                    (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev')
+                }
+            }
                        steps {
                         sh ' mvn clean install'
 	               echo "executing ${branch} on checkout code"
