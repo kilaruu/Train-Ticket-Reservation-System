@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('checkout'){
             steps{
-                git 'https://github.com/kilaruu/Train-Ticket-Reservation-System.git'
+                git 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
             }
         }
         stage ('maven build'){
@@ -11,15 +11,21 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        
-    stage('deploy'){
- steps{
-           sshagent(['Ubuntu2-SSH']) {
+        stage('sonarqube analysis'){
+            steps{
+                withSonarQubeEnv(credentialsId: 'sonarqube-Token', installationName:'sonar-server') {
     // some block
-            sh 'scp -o strictHostkeyChecking=no target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
+    sh 'mvn clean verify sonar:sonar -Dsonar.projectkey=sqa_4a4e250f2e9afe8fab38aeaf7db924c0e22b6ae4'
+            }
         }
     }
-
+    stage('deploy'){
+        steps{
+           sshagent(['tomcatcred']) {
+    // some block
+            sh 'scp -o strictHostkeyChecking=no target/*.war ubuntu@13.232.191.194:/opt/tomcat/apache-tomcat-9.0.68/webapps/'
+        }
+    }
 }
 }
 }
