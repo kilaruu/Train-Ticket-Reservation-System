@@ -18,8 +18,7 @@ pipeline {
 
     stage('deploy'){
         steps{
-           sshagent(['tomcatcred']) {
-    // some block
+           withCredentials([usernamePassword(credentialsId: 'tomcat-deploy-credentials', passwordVariable: 'TOMCAT_PASSWORD', usernameVariable: 'TOMCAT_USERNAME')]) {
             sh 'scp -o strictHostkeyChecking=no target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
         }
     }
