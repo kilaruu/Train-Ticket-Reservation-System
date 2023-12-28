@@ -15,14 +15,7 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        stage('sonarqube analysis'){
-            steps{
-                withSonarQubeEnv(credentialsId: 'SonarKey', installationName:'sonar-server') {
-    // some block
-    sh 'mvn clean verify sonar:sonar -Dsonar.projectkey=sqp_5629396ee103072a6734edaf7035a2bf2b16308e'
-            }
-        }
-    }
+
     stage('deploy'){
         steps{
            sshagent(['tomcatcred']) {
