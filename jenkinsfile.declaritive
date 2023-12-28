@@ -1,7 +1,7 @@
 pipeline {
     agent any
   environment {
-        TOMCAT_PORT = 1000
+        TOMCAT_PORT = 9090
     }
     
     stages {
