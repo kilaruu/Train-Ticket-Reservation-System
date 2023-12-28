@@ -7,8 +7,7 @@ node {
     }
     
   stage ('deploy') {
-              sshagent(['tomcatcred']) {
-    // some block
+              withCredentials([usernamePassword(credentialsId: 'tomcatcred', passwordVariable: 'TOMCAT_PASSWORD', usernameVariable: 'TOMCAT_USERNAME')]) {
             sh 'cp target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
 } 
            }
