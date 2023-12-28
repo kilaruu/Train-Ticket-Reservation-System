@@ -14,7 +14,7 @@ pipeline {
         
     stage('deploy'){
         steps{
-            sh 'scp -o strictHostkeyChecking=no target/*.war ubuntu@13.201.67.154:/opt/tomcat/apache-tomcat-9.0.68/webapps/'
+            sh 'sudo cp -o target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
     }
 }
 }
