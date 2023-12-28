@@ -13,9 +13,13 @@ pipeline {
         }
         
     stage('deploy'){
-        steps{
-            sh 'sudo cp /var/lib/jenkins/workspace/First_Pipeline/target/TrainBook-1.0.0-SNAPSHOT.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
+ steps{
+           sshagent(['Ubuntu2-SSH']) {
+    // some block
+            sh 'scp -o strictHostkeyChecking=no target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
+        }
     }
+
 }
 }
 }
