@@ -13,10 +13,7 @@ pipeline {
         }
         stage('Checkout') {
             agent {
-                docker {
-                    image 'maven:3.9.6-adoptopenjdk-11'
-                    args '-v /root/.m2:/root/.m2'
-                }
+                docker
             }
             steps {
                 git 'https://github.com/OPQjuly23/Train-Ticket-Reservation-System.git'
